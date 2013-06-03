@@ -124,8 +124,8 @@ set noerrorbells                " don't beep
 set showcmd                     " show (partial) command in the last line of the screen
                                 "    this also shows visual selection info
 set nomodeline                  " disable mode lines (security measure)
-"set ttyfast                     " always use a fast terminal
-set cursorline                  " underline the current line, for quick orientation
+"set ttyfast                    " always use a fast terminal
+"set cursorline                 " underline the current line, for quick orientation
 " }}}
 
 if has("gui_running")
