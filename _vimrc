@@ -20,6 +20,10 @@ set nocompatible
 
 syntax on
 
+" Change the mapleader from \ to ,
+let mapleader=","
+let maplocalleader="\\"
+
 " Editing behaviour {{{
 set showmode                    " always show what mode we're currently editing in
 "set nowrap                     " don't wrap lines [OFF]
@@ -61,6 +65,12 @@ set nrformats=                  " make <C-a> and <C-x> play well with
                                 "    zero-padded numbers (i.e. don't consider
                                 "    them octal or hex)
 " }}}
+
+" Toggle show/hide invisible chars
+nnoremap <leader>i :set list!<cr>
+
+" Toggle line numbers
+nnoremap <leader>N :setlocal number!<cr>
 
 " Folding rules {{{
 set foldenable                  " enable folding
@@ -125,8 +135,45 @@ set showcmd                     " show (partial) command in the last line of the
                                 "    this also shows visual selection info
 set nomodeline                  " disable mode lines (security measure)
 "set ttyfast                    " always use a fast terminal
-"set cursorline                 " underline the current line, for quick orientation
+"set cursorline                 " underline the current line, for quick orientation [OFF]
 " }}}
+
+" Toggle the foldcolumn {{{
+nnoremap <leader>f :call FoldColumnToggle()<cr>
+
+let g:last_fold_column_width = 4  " Pick a sane default for the foldcolumn
+
+function! FoldColumnToggle()
+    if &foldcolumn
+        let g:last_fold_column_width = &foldcolumn
+        setlocal foldcolumn=0
+    else
+        let &l:foldcolumn = g:last_fold_column_width
+    endif
+endfunction
+" }}}
+
+" Highlighting {{{
+if &t_Co > 2 || has("gui_running")
+    syntax on                   " switch syntax highlighting on, when the terminal has colors
+endif
+" }}}
+
+" Remap j and k to act as expected when used on long, wrapped, lines
+nnoremap j gj
+nnoremap k gk
+
+" Yank/paste to the OS clipboard with ,y and ,p
+nnoremap <leader>y "+y
+nnoremap <leader>Y "+yy
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+
+" Clears the search register
+nnoremap <silent> <leader>/ :let @/ = ""<cr>
+
+" Strip all trailing whitespace from a file, using ,w
+nnoremap <leader>W :%s/\s\+$//<CR>:let @/=''<CR>
 
 if has("gui_running")
     set lines=35 columns=95
